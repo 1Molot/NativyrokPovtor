@@ -1,59 +1,85 @@
-// function =>
-// handler (обработчик), listener (слушатель), subscriber (подписчик)
-// - при наступлении события
-// const event = new Event() - объект, который содержит сведения о
-// событии
-// function(event) - вызов функции
-// event, ev, e === new Event()
+const todoListId_1 = "12rt-fg67"  // v1()
+const todoListId_2 = "03gf-qw78"  // v1()
 
-// [] === new Array()
-// {} === new Object()
-// const map = new Map()
-// const set = new Set()
-
-
-
-const sm = document.getElementById("small")
-const md = document.getElementById("medium")
-const bg = document.getElementById("big")
-
-function handler_1() {
-    alert("Yo!!")
+const todoLists = [
+    {
+        id: todoListId_1,  // "12rt-fg67"
+        title: "What to learn",
+        filter: "all",
+    },
+    {
+        id: todoListId_2,  // "03gf-qw78"
+        title: "What to buy",
+        filter: "all",
+    },
+]
+const getKey = (func)=> func()
+const tasks = {
+    [todoListId_1]: [ // "12rt-fg67"
+        {id: 1, title: "HTML", isDone: true},
+        {id: 2, title: "CSS", isDone: true},
+        {id: 3, title: "JS/TS", isDone: false}, // true
+    ],
+    [todoListId_2]: [  // "03gf-qw78"
+        {id: 4, title: "Bread", isDone: true},
+        {id: 5, title: "Meat", isDone: true},
+        {id: 6, title: "Milk", isDone: false},
+    ],
+    [todoListId]: []
 }
-function handler_2() {
-    alert("Hey!!")
+
+
+console.log(tasks["12rt-fg67"])
+console.log(tasks[todoListId_1])
+console.log(tasks[todoLists[0].id])
+
+const setTodoLists = ([]) => {}
+const setTasks = ({}) => {}
+
+const addTodoList = (title) => {
+    const todoListId = "76nb-12ds"
+    const newTodo = {
+        id: todoListId,  // "76nb-12ds"
+        title: title,
+        filter: "all",
+    }
+    setTodoLists([...todoLists, newTodo])
+    setTasks({...tasks, [todoListId]: []})
 }
-function handler_3(e) {
-    e.stopPropagation()
-    console.log(e.currentTarget.id)
+
+
+const changeStatus = (taskId, newStatus) => {
+    const todoListsTasksForUpdate = tasks[todoListId_1] // array
+    const updatedTasksForTodoList = todoListsTasksForUpdate
+        .map(t => t.id === taskId
+            ? {...t, isDone: newStatus}
+            : t
+        )
+    const copyTasks = {...tasks}
+    copyTasks[todoListId_1] = updatedTasksForTodoList
+    setTasks(copyTasks)
+    //
+    const updatedTasks = tasks[todoListId_1]
+        .map(t => t.id === taskId
+            ? {...t, isDone: newStatus}
+            : t)
+    setTasks({...tasks,
+        [todoListId_1]: updatedTasks
+    })
 }
 
-// const anonymus = () => handler_1("Yo!")
-// const anonymusNext = () => handler_1("Yo!")
-//
-// sm.onclick = anonymus
-// sm.onclick = anonymusNext
-
-// sm.onclick = ()=> {
-//     handler_1()
-//     handler_2()
-// }
-// sm.onclick = () => handler_1()
+const removeTask = (taskId, todoListId) => {
+    const updatedTasks = tasks[todoListId]
+        .filter(t => t.id !== taskId)
+    setTasks({...tasks,
+        [todoListId]: updatedTasks
+    })
+}
 
 
-// sm.addEventListener("click", handler_1)
-// sm.addEventListener("click", handler_2)
-// sm.removeEventListener("click", handler_1)
-sm.addEventListener("click", handler_3)
-md.addEventListener("click", handler_3)
-bg.addEventListener("click", handler_3)
 
-const a = document.getElementById("a")
-a.addEventListener("click", (e)=> {
-    // e.preventDefault()
-    alert("Yo?!!!!!!!!!!!!!!!!!!")
-    return
-})
+
+
 
 
 
